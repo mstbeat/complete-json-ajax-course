@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON</title>
+</head>
+<body>
+  <h1>Learn JSON</h1>
+  <div id="output"></div>
+  <script type="text/javascript">
+    var data = '{"results":[{"gender":"female","name":{"title":"Miss","first":"Deniz","last":"Karaduman"},"location":{"street":{"number":5354,"name":"Abanoz Sk"},"city":"Konya","state":"Muş","country":"Turkey","postcode":15396,"coordinates":{"latitude":"70.1258","longitude":"143.1918"},"timezone":{"offset":"-1:00","description":"Azores, Cape Verde Islands"}},"email":"deniz.karaduman@example.com","login":{"uuid":"47468689-09de-4f64-a174-357f99e3ffee","username":"crazyelephant386","password":"illini","salt":"MZ57ys6f","md5":"fb147fccd59bb8e8b910358980e7b9aa","sha1":"bd928fcccc8b7b771616e540bbff85f8a9dcbb0c","sha256":"7a86067bd9b4023c5bc7b2959d3b9ab1ccb03469309ebe7aa67986fcffbfb78b"},"dob":{"date":"1968-09-19T02:56:23.145Z","age":52},"registered":{"date":"2018-09-23T07:27:57.039Z","age":2},"phone":"(682)-999-8540","cell":"(819)-629-0568","id":{"name":"","value":null},"picture":{"large":"https://randomuser.me/api/portraits/women/54.jpg","medium":"https://randomuser.me/api/portraits/med/women/54.jpg","thumbnail":"https://randomuser.me/api/portraits/thumb/women/54.jpg"},"nat":"TR"}],"info":{"seed":"9a8c84a3dbac5196","results":1,"page":1,"version":"1.3"}}';
+
+    var dataJSON = JSON.parse(data);
+    var person = dataJSON.results[0];
+    var output = document.querySelector("#output");
+
+    var html = person.name.first + ' ' + person.name.last;
+    html += '<img src="' + person.picture.thumbnail + '">';
+
+    output.innerHTML = html;
+
+    var strMe = JSON.stringify(dataJSON);
+    console.log(strMe);
+  </script>
+</body>
+</html>

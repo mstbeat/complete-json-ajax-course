@@ -8,36 +8,84 @@
 <body>
   <h1>Learn JSON</h1>
   <div id="output">
-    <ul id="tasklist"></ul>
+    <ul id="taskList"></ul>
   </div>
+  <form id="myForm">
+    Task: <input type="text" name="task" placeholder="add task">
+    <input type="submit" value="Add new Task">
+  </form>
   <script type="text/javascript">
-    var data = '[{"info":"Cut Grass","status":false},{"info":"Clean Room","status":false},{"info":"Go to Gym","status":false},{"info":"Make Dinner","status":false}]';
-    var dataJSON = JSON.parse(data);
-
+    var dataJSON = '';
     var output = document.getElementById('output');
-    var taskList = document.querySelector('#tasklist');
+    var taskList = document.querySelector('#taskList');
 
-    for(var key in dataJSON.tasks){
-      // console.log(key, dataJSON.tasks[key]);
+    document.getElementById('myForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      var tempValue = document.querySelector('input[name="task"]').value;
+      addNewItem({"info":tempValue,"status":false});
+      console.log(dataJSON);
+    });
 
-      var status = !dataJSON.tasks[key] ? '' : 'checked';
-      var html = '<li>'+key+'<input type="checkbox" value="'+key+'" '+status+'></li>';
-      taskList.innerHTML += html;
-    };
-    addEvents();
-
-    function addEvents(){
-      var checkBoxes = document.querySelectorAll('#tasklist input[type="checkbox"]');
-      for(var index in checkBoxes){
-        checkBoxes[index].onchange = updateJSON;
+    window.onload = function(){
+      if(sessionStorage['tasklist'] != null){
+        dataJSON = JSON.parse(sessionStorage['tasklist']);
+        buildCheckboxes(dataJSON);
+      }else{
+        // var data = '[{"info":"Cut the Grass","status":false},{"info":"Clean Room","status":true},{"info":"Go to Gym","status":false},{"info":"Make Dinner","status":false}]';
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState == 4 && xhr.status == 200){
+            var data = xhr.responseText;
+            dataJSON = JSON.parse(data);
+            buildCheckboxes(dataJSON);
+          };
+        };
+        xhr.open("GET",'http://discoveryvip.com/shared/json.php?f=list',true);
+        xhr.send();
       }
-      console.log(checkBoxes);
+    };
+
+    function addNewItem(data){
+      addCheckbox(data,dataJSON.length);
+      dataJSON.push(data);
+      sessionStorage['tasklist'] = JSON.stringify(dataJSON);
+    };
+
+    function addCheckbox(data,key){
+      var li = document.createElement('li');
+      var checkbox = document.createElement('input');
+      var textInside = document.createTextNode(data.info);
+      var span = document.createElement('span');
+      span.innerHTML = 'x';
+      span.onclick = remove;
+      checkbox.type = 'checkbox';
+      checkbox.value = key;
+      checkbox.checked =  data.status;
+      checkbox.setAttribute('onchange','updateJSON()');
+      li.appendChild(textInside);
+      li.appendChild(checkbox);
+      li.appendChild(span);
+      document.querySelector('#taskList').appendChild(li);
+    };
+
+    function remove(event){
+      var index = this.previousElementSibling.value;
+      taskList.innerHTML = '';
+      dataJSON.splice(index,1)
+      buildCheckboxes(dataJSON);
+      sessionStorage['tasklist'] = JSON.stringify(dataJSON);
+    };
+
+    function buildCheckboxes(data){
+      for(var key in data){
+        addCheckbox(data[key],key);
+      };
     };
 
     function updateJSON(){
       var key = event.target.value;
-      console.log(key,event.target.checked);
-      dataJSON.tasks[key] = event.target.checked;
+      dataJSON[key].status = event.target.checked;
+      sessionStorage['tasklist'] = JSON.stringify(dataJSON);
     };
   </script>
 </body>

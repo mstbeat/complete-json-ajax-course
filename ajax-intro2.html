@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AJAX</title>
+</head>
+<body>
+  <h1>Learn AJAX</h1>
+  <div id="output"></div>
+  <button id="loadNew">Load</button>
+  <script type="text/javascript">
+    var output = document.getElementById('output');
+    var buttonClick = document.getElementById('loadNew');
+    buttonClick.addEventListener('click',function(){
+      loadAjax();
+    });
+
+    function loadAjax(){
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4 && xhr.status == 200){
+          output.innerHTML = xhr.responseText;
+        };
+      };
+      xhr.open('GET','simple.txt',true);
+      xhr.send();
+    };
+
+  </script>
+</body>
+</html>

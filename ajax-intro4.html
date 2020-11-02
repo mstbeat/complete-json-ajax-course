@@ -17,18 +17,30 @@
     function loadJoke(){
       const url = 'https://api.chucknorris.io/jokes/random';
 
-      fetch(url).then(function(response){
-        console.log(response.headers.get('Content-Type'));
-        console.log(response.headers.get('Date'));
-        console.log(response.type);
+      fetch(url)
+        .then(resJson)
+        .then(json => document.querySelector('#output').innerHTML = '<div><img src="'+json.icon_url+'">'+json.value+'</div>')
+        .catch(error => console.log(error));
+
+      function resJson(response){
         return response.json();
-      }).then(function(json){
-        console.log(json);
-        let html = '<div><img src="'+json.icon_url+'">'+json.value+'</div>'
-        document.querySelector('#output').innerHTML = html;
-      }).catch(function(error){
-        console.log(error);
-      });
+      }
+
+      // fetch(url).then(function(response){
+      //   console.log(response.headers.get('Content-Type'));
+      //   console.log(response.headers.get('Date'));
+      //   console.log(response.type);
+      //   if(response.status != 200){
+      //     console.log('Oops, not connected: '+response.status);
+      //   }
+      //   return response.json();
+      // }).then(function(json){
+      //   console.log(json);
+      //   let html = '<div><img src="'+json.icon_url+'">'+json.value+'</div>'
+      //   document.querySelector('#output').innerHTML = html;
+      // }).catch(function(error){
+      //   console.log(error);
+      // });
 
       // fetch('simple.txt').then(function(response){
       //   return response.text();

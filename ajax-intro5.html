@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AJAX</title>
+</head>
+<body>
+  <h1>Learn AJAX</h1>
+  <div id="output"></div>
+  <button id="trigger">Get a Joke</button>
+  <script type="text/javascript">
+
+    var joker = document.querySelector('#trigger');
+    joker.addEventListener('click',loadJoke);
+
+    function loadJoke(){
+      const url = 'http://s179017901.onlinehome.us/discoveryvip/';
+      const myData = 'foo=bar&lorem=ipsum';
+
+      fetch(url, {
+        method:'post',
+        headers:{"Content-type":"application/x-www-form-urlencoded; charset=UTF-8"},
+        body:myData
+      })
+        .then(function(response){
+          return response.json();
+        }).then(function(data){
+          console.log(data);
+        }).catch(error => console.log(error));
+
+    };
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+.next{
+  font-size: 1em;
+  background-color: red;
+  width: 300px;
+  margin: 20px 0;
+  padding: 10px;
+}
+
+.btn{
+  display: inline-block;
+  padding: 5px;
+  font-family: sans-serif;
+  border-radius: 10px;
+  font-size: 1.5em;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.answer{
+  border: 1px solid #ddd;
+}
+
+.answer:hover{
+  background-color: beige;
+  border: 1px solid red;
+}
+
+.question{
+  display: block;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.score{
+  font-size: 2em;
+}
+
+.end{
+  display: block;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: red;
+}

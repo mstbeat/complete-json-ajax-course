@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Checkboxes</title>
+</head>
+<body>
+  <div class="output"></div>
+  <script>
+    const tasks = {
+      "list" : [
+        {"task":"clean up room", "done":true},
+        {"task":"clean garage", "done":true},
+        {"task":"fix fence", "done":false}
+      ]
+    };
+    const output = document.querySelector('.output');
+    const addTask = document.createElement('input');
+    const btn = document.createElement('button');
+    const myList = document.createElement('div');
+    addTask.setAttribute('type','text');
+    btn.textContent = 'Add Task';
+    output.append(myList);
+    output.append(addTask);
+    output.append(btn);
+    btn.addEventListener('click',function(e){
+      console.log(addTask.value);
+      addNewTask(addTask.value,false);
+      addTask.value = '';
+    })
+
+    tasks.list.forEach(function(task){
+      console.log(task);
+      addNewTask(task.task,task.done);
+    });
+
+    function addNewTask(valText,valBoo){
+      const newLi = document.createElement('li');
+      const newInput = document.createElement('input');
+      const temp = valText.charAt(0).toUpperCase() + valText.slice(1);
+      newInput.setAttribute('type', 'checkbox');
+      newInput.checked = valBoo;
+      if(valBoo){
+        newLi.style.backgroundColor = 'green';
+      }else{
+        newLi.style.backgroundColor = 'red';
+      };
+      newInput.val = temp;
+      newLi.textContent = temp
+      newLi.append(newInput);
+      myList.append(newLi);
+
+      newLi.addEventListener('change',function(e){
+        if(newInput.checked){
+          newLi.style.backgroundColor = 'green';
+        }else{
+          newLi.style.backgroundColor = 'red';
+        }
+        console.log(temp);
+        console.log(newInput.checked);
+      });
+
+    }
+
+
+    // for(let key in tasks.list){
+    //   const newLi = document.createElement('li');
+    //   const newInput = document.createElement('input');
+    //   const temp = key.charAt(0).toUpperCase() + key.slice(1)
+    //   newInput.checked = tasks.list[key];
+    //   newInput.setAttribute('type', 'checkbox');
+    //   newInput.val = temp;
+    //   newLi.textContent = temp
+    //   newLi.append(newInput);
+    //   newLi.addEventListener('change',function(e){
+    //     console.log(e.target.val);
+    //     console.log(newInput.checked);
+    //     if(newInput.checked){
+    //       newLi.style.backgroundColor = 'green';
+    //     }else{
+    //       newLi.style.backgroundColor = 'red';
+    //     }
+    //   });
+    //   output.append(newLi);
+    // }
+
+  </script>
+</body>
+</html>

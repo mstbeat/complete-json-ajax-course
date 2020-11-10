@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tester 1</title>
+</head>
+<body>
+  <div class="output"></div>
+  <button>Load Text</button>
+
+  <script>
+    const btn = document.querySelector('button');
+    const output = document.querySelector('.output');
+
+    // btn.addEventListener('click',loadTextFile);
+    btn.addEventListener('click',loadTextFileFetch);
+
+    function loadTextFileFetch(){
+      fetch('sample.txt')
+      .then(rep => rep.text())
+      .then(data => {
+        output.innerHTML = data;
+      });
+    }
+
+    function loadTextFile(){
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = ()=>{
+        if(xhr.readyState === 4 && xhr.status === 200){
+          console.log(xhr);
+          output.innerHTML = xhr.responseText;
+        };
+      };
+      xhr.open('GET','sample.txt');
+      xhr.send();
+    };
+  </script>
+</body>
+</html>

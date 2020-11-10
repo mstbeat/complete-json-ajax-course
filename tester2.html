@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tester 2</title>
+</head>
+<body>
+
+  <script>
+    const btn = document.createElement('button');
+    const output = document.createElement('div');
+    btn.innerHTML = 'Click me';
+    document.body.prepend(btn);
+    document.body.prepend(output);
+
+    btn.addEventListener('click',function(){
+      const url = 'json.json';
+      fetch(url).then(function(res){
+        return res.json();
+      }).then(function(data){
+        console.log(data);
+        output.innerHTML = '';
+        data.forEach(function(el){
+          const div = document.createElement('div');
+          div.textContent = `${el.info} ${el.status}`;
+          div.addEventListener('click',function(){
+            if(div.style.backgroundColor == 'red'){
+            div.style.backgroundColor = 'white';
+            }else{
+            div.style.backgroundColor = 'red';
+            }
+          })
+          output.append(div);
+        });
+
+        // let html = '';
+        // data.forEach(function(el){
+        //   html += `<div>${el.info} ${el.status}</div>`;
+        // });
+        // output.innerHTML = html;
+      });
+    });
+  </script>
+</body>
+</html>

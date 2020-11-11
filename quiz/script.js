@@ -9,37 +9,45 @@ const url = 'https://script.google.com/macros/s/AKfycbzY6vnGOT3AqpxcF7EELfWuH1gS
 fetch(url).then(function(res){
   return res.json();
 }).then(function(data){
-  console.log(data.data);
-  game.total = data.data.length; //json data for game
-  game.val = 0; //question we are on
+  game.total = data.data.length;
+  game.val = 0;
   game.score = 0;
   game.arr = data.data;
-  data.data.forEach(function(el){
-    console.log(el);
-  });
   createQuestion();
 })
 
 function createQuestion(){
   nx.style.display = "none";
   if(game.val+1 > game.total){
-    message.textContent = 'Your score was '+game.score+' out of '+game.total+'!';
-    output.textContent = "GAME OVER";
+    message.textContent = 'あなたのスコアは '+game.score+' / '+game.total+' !';
+    if(game.score >= 7){
+      output.style.color = "green";
+      output.textContent = "あなたは立派なバンド経験者です！";
+      nx.textContent = 'もう一度回答する';
+      nx.style.display = 'block';
+      nx.style.backgroundColor = "green";
+    }else{
+      output.style.color = "red";
+      output.textContent = "あなたはバンド経験者ではないようです…";
+      nx.textContent = '再挑戦する';
+      nx.style.display = 'block';
+      nx.style.backgroundColor = "red";
+    }
     message.classList.add('score');
     output.classList.add('end');
+    nx.addEventListener('click',function(){
+      window.location.reload();
+    })
   }else{
-    message.textContent = 'Question #'+(game.val+1)+' out of '+game.total;
+    message.textContent = 'クイズ '+game.total+' 問中 '+(game.val+1)+' 問目';
     output.innerHTML = '';
-    console.log(game);
     let q = game.arr[game.val];
-    console.log(q);
     const main = document.createElement('div');
     main.textContent = q.question;
     main.classList.add("question");
     output.appendChild(main);
     arrayRandom(q.opt);
     q.opt.forEach(function(el){
-      console.log(el);
       let span = document.createElement('span');
       span.textContent = el;
       span.classList.add('answer');
@@ -58,28 +66,38 @@ function arrayRandom(arr){
 };
 
 function checker(e){
-  // console.log(e.target.ans);
-  // console.log(this.ans);
-
   const selAns = document.querySelectorAll('.answer');
   selAns.forEach(function(ele){
     ele.classList.remove('answer');
     ele.style.color = "#ddd";
+    ele.style.cursor = 'not-allowed';
     ele.removeEventListener('click',checker);
   })
 
   let sel = e.target;
-  console.log(sel.textContent);
-  if(sel.textContent == sel.ans){
-    console.log('correct');
-    sel.style.color = "green"
-    nx.textContent = 'Correct - click to move to the next questions';
-    game.score++;
+  if(game.val+1 >= game.total){
+    if(sel.textContent == sel.ans){
+      sel.style.color = "green"
+      nx.textContent = '正解！ - クリックしてスコアを確認する';
+      game.score++;
+      nx.style.backgroundColor = "green";
+    }else{
+      sel.style.color = "red"
+      nx.textContent = '不正解 - クリックしてスコアを確認する';
+      nx.style.backgroundColor = "red";
+    };
   }else{
-    console.log('wrong');
-    sel.style.color = "red"
-    nx.textContent = 'Wrong - click to move to the next questions';
-  };
+    if(sel.textContent == sel.ans){
+      sel.style.color = "green"
+      nx.textContent = '正解！ - クリックして次の問題へ';
+      game.score++;
+      nx.style.backgroundColor = "green";
+    }else{
+      sel.style.color = "red"
+      nx.textContent = '不正解 - クリックして次の問題へ';
+      nx.style.backgroundColor = "red";
+    };
+  }
   game.val++;
   nx.style.display = "block";
 }
